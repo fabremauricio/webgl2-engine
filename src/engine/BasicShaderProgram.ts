@@ -25,21 +25,18 @@ export default class BasicShaderProgram extends ShaderProgram {
   }
 
   render(
+    gl: WebGL2RenderingContext,
     geometry: Geometry,
     modelView: Float32Array,
     projection: Float32Array
   ) {
-    geometry.bind(this.vertexPosition);
-    console.log(modelView);
+    geometry.bind(gl, this.vertexPosition);
     
-    this.gl?.useProgram(this.program);
-    this.gl?.uniformMatrix4fv(this.projectionMatrix, false, projection);
-    this.gl?.uniformMatrix4fv(this.modelViewMatrix, false, modelView);
+    gl.useProgram(this.program);
+    
+    gl.uniformMatrix4fv(this.projectionMatrix, false, projection);
+    gl.uniformMatrix4fv(this.modelViewMatrix, false, modelView);
 
-    this.gl?.drawArrays(
-      this.gl.TRIANGLE_STRIP,
-      geometry.vertexOffset(),
-      geometry.vertexCount()
-    );
+    geometry.draw(gl);
   }
 }

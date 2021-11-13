@@ -2,25 +2,24 @@ export default abstract class ShaderProgram {
   private vertexSource: string;
   private fragmentSource: string;
   protected program: WebGLProgram | null;
-  protected gl: WebGL2RenderingContext | null;
 
   constructor(vertexSource: string, fragmentSource: string) {
     this.vertexSource = vertexSource;
     this.fragmentSource = fragmentSource;
     this.program = null;
-    this.gl = null;
   }
 
   public init(gl: WebGL2RenderingContext) {
-    this.gl = gl;
     this.program = this.initShaderProgram(
       gl,
       this.vertexSource,
       this.fragmentSource
     );
     
-    if(this.gl && this.program) {
-      this.initCallback(this.gl,this.program);
+    if(this.program) {
+      this.initCallback(gl,this.program);
+    } else {
+      console.error("Cannot init program");
     }
   }
 

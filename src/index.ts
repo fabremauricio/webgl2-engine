@@ -1,4 +1,4 @@
-import {init} from './renderer/renderer';
+import {init} from './engine/renderer';
 
 window.onload = main;
 

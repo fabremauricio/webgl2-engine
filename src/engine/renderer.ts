@@ -26,6 +26,7 @@ export function init(gl: WebGL2RenderingContext) {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   basic.render(
+    gl,
     plane,
     new Float32Array(modelView),
     new Float32Array(projection)
