@@ -1,9 +1,15 @@
-export default abstract class ShaderProgram {
+import Scene from "./Scene";
+import SceneNode from "./SceneNode";
+
+export default abstract class ShaderProgram extends SceneNode {
   private vertexSource: string;
   private fragmentSource: string;
+  
   protected program: WebGLProgram | null;
 
-  constructor(vertexSource: string, fragmentSource: string) {
+  constructor(scene: Scene, vertexSource: string, fragmentSource: string) {
+    super(scene);
+
     this.vertexSource = vertexSource;
     this.fragmentSource = fragmentSource;
     this.program = null;
@@ -15,15 +21,29 @@ export default abstract class ShaderProgram {
       this.vertexSource,
       this.fragmentSource
     );
-    
-    if(this.program) {
-      this.initCallback(gl,this.program);
+
+    if (this.program) {
+      this.initCallback(gl, this.program);
     } else {
       console.error("Cannot init program");
     }
   }
 
-  abstract initCallback(gl: WebGL2RenderingContext, program: WebGLProgram): void;
+  public dispose(gl: WebGL2RenderingContext) {
+    if(this.program) {
+      this.disposeCallback(gl, this.program);
+    }
+  }
+
+  abstract initCallback(
+    gl: WebGL2RenderingContext,
+    program: WebGLProgram
+  ): void;
+
+  abstract disposeCallback(
+    gl: WebGLRenderingContext,
+    program: WebGLProgram
+  ): void;
 
   private loadShader(gl: WebGL2RenderingContext, type: number, source: string) {
     const shader = gl.createShader(type);
@@ -31,14 +51,13 @@ export default abstract class ShaderProgram {
     if (shader) {
       gl.shaderSource(shader, source);
       gl.compileShader(shader);
-      
-      if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         const error = gl.getShaderInfoLog(shader);
-        console.error('Shader Error', error);
+        console.error("Shader Error", error);
         gl.deleteShader(shader);
         return null;
       }
-
 
       return shader;
     }
@@ -62,12 +81,11 @@ export default abstract class ShaderProgram {
         gl.attachShader(program, fragment);
         gl.linkProgram(program);
 
-        if(!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
           const error = gl.getProgramInfoLog(program);
-          console.error('Program Error', error);
+          console.error("Program Error", error);
           return null;
         }
-
 
         return program;
       }

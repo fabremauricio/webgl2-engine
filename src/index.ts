@@ -1,4 +1,5 @@
-import {init} from './engine/renderer';
+import Scene from "./engine/core/Scene";
+import SampleScene from "./engine/SampleScene";
 
 window.onload = main;
 
@@ -6,7 +7,10 @@ function main() {
     const gl = getContext("canvas");
 
     if(gl) {
-        init(gl);
+        const scene: Scene = new SampleScene();
+
+        scene.init(gl);
+        scene.render(gl);
     } else {
         console.error("Cannot find gl context");
     }

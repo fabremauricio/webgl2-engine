@@ -1,10 +1,11 @@
-import Geometry from "./Geometry";
+import Geometry from "./core/Geometry";
+import Scene from "./core/Scene";
 
 export default class Plane extends Geometry {
   private vertexPosition: WebGLBuffer | null;
 
-  constructor() {
-    super();
+  constructor(scene: Scene) {
+    super(scene);
     this.vertexPosition = null;
   }
 
@@ -17,6 +18,10 @@ export default class Plane extends Geometry {
       new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]),
       gl.STATIC_DRAW
     );
+  }
+
+  disposeCallback(gl: WebGL2RenderingContext): void {
+    // Remove the data
   }
 
   bind(gl: WebGL2RenderingContext, vertexPositionLocation: number): void {

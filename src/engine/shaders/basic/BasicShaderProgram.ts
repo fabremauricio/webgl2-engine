@@ -1,16 +1,19 @@
-import ShaderProgram from "./ShaderProgram";
 
-import vertexSource from "../shaders/vertex.glsl";
-import fragmentSource from "../shaders/fragment.glsl";
-import Geometry from "./Geometry";
+import vertexSource from "./vertex.glsl";
+import fragmentSource from "./fragment.glsl";
+
+import Scene from "../../core/Scene";
+import Geometry from "../../core/Geometry";
+import ShaderProgram from "../../core/ShaderProgram";
 
 export default class BasicShaderProgram extends ShaderProgram {
+
   private vertexPosition: number;
   private projectionMatrix: WebGLUniformLocation | null;
   private modelViewMatrix: WebGLUniformLocation | null;
 
-  constructor() {
-    super(vertexSource, fragmentSource);
+  constructor(scene: Scene) {
+    super(scene,vertexSource, fragmentSource);
     this.vertexPosition = -1;
     this.projectionMatrix = null;
     this.modelViewMatrix = null;
@@ -24,7 +27,11 @@ export default class BasicShaderProgram extends ShaderProgram {
     console.log(this.modelViewMatrix);
   }
 
-  render(
+  disposeCallback(gl: WebGLRenderingContext, program: WebGLProgram): void {
+    // Todo remove data
+  }
+
+  run(
     gl: WebGL2RenderingContext,
     geometry: Geometry,
     modelView: Float32Array,
