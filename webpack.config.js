@@ -17,6 +17,11 @@ module.exports = {
         use: "raw-loader",
         include: [path.resolve(__dirname, "src")],
       },
+      {
+        test: /\.obj$/,
+        use: "raw-loader",
+        include: [path.resolve(__dirname, "src")],
+      },
     ],
   },
   resolve: {

@@ -1,41 +1,36 @@
-import { mat4 } from "gl-matrix";
+import PerspectiveCamera from "./core/camera/PerspectiveCamera";
+import OBJGeometry from "./core/geometry/OBJGeometry";
 import Scene from "./core/Scene";
-import Plane from "./Plane";
-import BasicShaderProgram from "./shaders/basic/BasicShaderProgram";
+
+import suzanneSource from '../engine/models/suzanne.obj';
+import NormalsColorsProgram from "./shaders/normals-colors/NormalsColorsProgram";
 
 export default class SampleScene extends Scene {
-  private plane: Plane;
-  private shader: BasicShaderProgram;
+  private shader: NormalsColorsProgram;
+  private camera: PerspectiveCamera;
+  private suzanne: OBJGeometry;
 
   constructor() {
     super();
 
-    this.plane = new Plane(this);
-    this.shader = new BasicShaderProgram(this);
+    this.shader = new NormalsColorsProgram(this);
+    this.camera = new PerspectiveCamera();
+
+    this.suzanne = new OBJGeometry(this,suzanneSource);
   }
 
   render(gl: WebGL2RenderingContext): void {
-    const projection = mat4.create();
-    const modelView = mat4.create();
-
-    const vec3: [number, number, number] = [0.0, 0.0, -4.0];
-    mat4.translate(modelView, modelView, vec3);
-    mat4.perspective(
-      projection,
-      (45 * Math.PI) / 180,
-      gl.canvas.clientWidth / gl.canvas.clientHeight,
-      0.1,
-      100.0
-    );
+    this.camera.update(gl.canvas.clientWidth, gl.canvas.clientHeight);
 
     gl.clearColor(1.0, 0.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
 
     this.shader.run(
       gl,
-      this.plane,
-      new Float32Array(modelView),
-      new Float32Array(projection)
+      this.suzanne,
+      this.camera.viewMatrix(),
+      this.camera.projectionMatrix()
     );
   }
 }

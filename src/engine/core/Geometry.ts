@@ -16,9 +16,4 @@ export default abstract class Geometry extends SceneNode{
   abstract initCallback(gl: WebGL2RenderingContext): void;
   abstract disposeCallback(gl: WebGL2RenderingContext): void;
   abstract drawCallback(gl: WebGL2RenderingContext): void;
-  
-  abstract bind(
-    gl: WebGL2RenderingContext,
-    vertexPositionLocation: number
-  ): void;
 }

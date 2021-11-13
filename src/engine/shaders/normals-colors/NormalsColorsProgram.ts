@@ -6,7 +6,7 @@ import Scene from "../../core/Scene";
 import Geometry from "../../core/Geometry";
 import ShaderProgram from "../../core/ShaderProgram";
 
-export default class BasicShaderProgram extends ShaderProgram {
+export default class NormalsColorsProgram extends ShaderProgram {
   private projectionMatrix: WebGLUniformLocation | null = null;
   private modelViewMatrix: WebGLUniformLocation | null = null;
 
@@ -19,9 +19,7 @@ export default class BasicShaderProgram extends ShaderProgram {
     this.modelViewMatrix = gl.getUniformLocation(program, 'modelView');
   }
 
-  disposeCallback(gl: WebGLRenderingContext, program: WebGLProgram): void {
-    // Todo remove data
-  }
+  disposeCallback(gl: WebGLRenderingContext, program: WebGLProgram): void {}
 
   run(
     gl: WebGL2RenderingContext,

@@ -23,14 +23,12 @@ export default class Plane extends Geometry {
   disposeCallback(gl: WebGL2RenderingContext): void {
     // Remove the data
   }
-
-  bind(gl: WebGL2RenderingContext, vertexPositionLocation: number): void {
-    gl.bindBuffer(vertexPositionLocation, this.vertexPosition);
-    gl.vertexAttribPointer(vertexPositionLocation, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vertexPositionLocation);
-  }
-
+  
   drawCallback(gl: WebGL2RenderingContext): void {
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPosition);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(0);
+
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 }

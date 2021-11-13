@@ -10,7 +10,13 @@ function main() {
         const scene: Scene = new SampleScene();
 
         scene.init(gl);
-        scene.render(gl);
+        
+        const loop = () => {
+            scene.render(gl);
+            requestAnimationFrame(loop);
+        }
+
+        loop();
     } else {
         console.error("Cannot find gl context");
     }
