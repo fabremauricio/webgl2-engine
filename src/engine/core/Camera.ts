@@ -7,7 +7,7 @@ export default abstract class Camera {
   abstract projectionMatrix(): Float32Array;
   abstract viewMatrix(): Float32Array;
 
-  update(width: number, height: number): void {
+  resize(width: number, height: number): void {
     this.width = width;
     this.height = height;
   }
@@ -18,5 +18,13 @@ export default abstract class Camera {
     const matrix = mat4.create();
     mat4.multiply(matrix, this.viewMatrix(), modelMatrix);
     return new Float32Array(matrix);
+  }
+
+  get screenWidth() {
+    return this.width;
+  }
+
+  get screenHeight() {
+    return this.height;
   }
 }

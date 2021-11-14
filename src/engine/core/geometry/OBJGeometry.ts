@@ -104,6 +104,11 @@ export default class OBJGeometry extends Geometry {
       new Uint16Array(this.indices.flat()),
       gl.STATIC_DRAW
     );
+
+    this.vertices = [];
+    this.normals = [];
+    this.indices = [];
+    this.textures = [];
   }
 
   disposeCallback(gl: WebGL2RenderingContext): void {}
@@ -125,6 +130,6 @@ export default class OBJGeometry extends Geometry {
     gl.enableVertexAttribArray(1);
     gl.enableVertexAttribArray(2);
 
-    gl.drawElements(gl.TRIANGLES, this.indices.flat().length, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_SHORT, 0);
   }
 }

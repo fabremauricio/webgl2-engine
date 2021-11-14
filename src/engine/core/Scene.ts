@@ -17,11 +17,15 @@ export default abstract class Scene {
 
     init(gl: WebGL2RenderingContext) {
         this.nodes.forEach(n => n.init(gl));
+        this.initCallback(gl);
     }
 
     dispose(gl: WebGL2RenderingContext) {
         this.nodes.forEach(n => n.dispose(gl));
+        this.disposeCallback(gl);
     }
 
+    abstract initCallback(gl: WebGL2RenderingContext): void;
+    abstract disposeCallback(gl: WebGL2RenderingContext): void;
     abstract render(gl: WebGL2RenderingContext): void;
 }

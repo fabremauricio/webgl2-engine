@@ -28,6 +28,13 @@ function getContext(canvasId: string) : WebGL2RenderingContext | null{
     if(canvas) {
         const gl: WebGL2RenderingContext | null= canvas.getContext("webgl2");
         if(gl) {
+            const resize = new ResizeObserver(([]) => {
+                canvas.height = canvas.clientHeight;
+                canvas.width = canvas.clientWidth;
+            });
+
+            resize.observe(canvas);
+
             return gl;
         }
     }
