@@ -7,6 +7,7 @@ export default class OBJGeometry extends Geometry {
   private textures: Array<[number, number]> = [];
   private indices: Array<[number, number, number]> = [];
 
+  private vao: WebGLVertexArrayObject | null = null;
   private vertexBuffer: WebGLBuffer | null = null;
   private indexBuffer: WebGLBuffer | null = null;
 
@@ -64,62 +65,43 @@ export default class OBJGeometry extends Geometry {
           newNormals[vi - 1] = this.normals[ni - 1];
         }
 
-        index.push(vi-1);
+        index.push(vi - 1);
       }
       this.indices.push(index as [number, number, number]);
     });
 
-    
     this.textures = newTextures;
     this.normals = newNormals;
-    
+
     this.indexCount = this.indices.length * 3;
   }
 
   initCallback(gl: WebGL2RenderingContext): void {
-    this.vertexBuffer = gl.createBuffer();
-    this.indexBuffer = gl.createBuffer();
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-
-    /// Pack everything
-
     const array = [];
 
-    for(let i =0; i < this.vertices.length; i++) {
+    for (let i = 0; i < this.vertices.length; i++) {
       array.push(this.vertices[i]);
       array.push(this.normals[i]);
       array.push(this.textures[i]);
     }
 
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array(array.flat()),
-      gl.STATIC_DRAW
-    );
+    const indices = new Uint16Array(this.indices.flat());
+    const vertices = new Float32Array(array.flat());
+
+    this.indexBuffer = gl.createBuffer();
+    this.vertexBuffer = gl.createBuffer();
+    this.vao = gl.createVertexArray();
+    gl.bindVertexArray(this.vao);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-    gl.bufferData(
-      gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(this.indices.flat()),
-      gl.STATIC_DRAW
-    );
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
-    this.vertices = [];
-    this.normals = [];
-    this.indices = [];
-    this.textures = [];
-  }
-
-  disposeCallback(gl: WebGL2RenderingContext): void {}
-
-  drawCallback(gl: WebGL2RenderingContext): void {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
     const stride = 4 * (3 + 3 + 2);
     const offsetPosition = 4 * 0;
-    const offsetNormal = 4* 3;
+    const offsetNormal = 4 * 3;
     const offsetUV = 4 * 6;
 
     gl.vertexAttribPointer(0, 3, gl.FLOAT, false, stride, offsetPosition);
@@ -130,6 +112,22 @@ export default class OBJGeometry extends Geometry {
     gl.enableVertexAttribArray(1);
     gl.enableVertexAttribArray(2);
 
+    gl.bindVertexArray(null);
+
+    this.vertices = [];
+    this.normals = [];
+    this.indices = [];
+    this.textures = [];
+  }
+
+  disposeCallback(gl: WebGL2RenderingContext): void {
+    gl.deleteVertexArray(this.vao);
+    gl.deleteBuffer(this.indexBuffer);
+    gl.deleteBuffer(this.vertexBuffer);
+  }
+
+  drawCallback(gl: WebGL2RenderingContext): void {
+    gl.bindVertexArray(this.vao);
     gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_SHORT, 0);
   }
 }
