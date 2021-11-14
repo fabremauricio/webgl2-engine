@@ -2,7 +2,7 @@ import PerspectiveCamera from "./core/camera/PerspectiveCamera";
 import OBJGeometry from "./core/geometry/OBJGeometry";
 import Scene from "./core/Scene";
 
-import suzanneSource from "../engine/models/untitled.obj";
+import suzanneSource from "../engine/models/cube.obj";
 import NormalsColorsProgram from "./shaders/normals-colors/NormalsColorsProgram";
 import OrbitControls from "./core/utils/OrbitControls";
 import TextureProgram from "./shaders/texture/TextureProgram";

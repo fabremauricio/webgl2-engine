@@ -4,7 +4,7 @@ import SceneNode from "../SceneNode";
 
 export default class OrbitControls extends SceneNode {
   private camera: PerspectiveCamera;
-  private radius = 5;
+  private radius = 4;
 
   private free = false;
 
@@ -88,7 +88,7 @@ export default class OrbitControls extends SceneNode {
     const opp = a * this.radius;
     const adj = this.radius;
 
-    return Math.atan(opp / adj);
+    return 3 * Math.atan(opp / adj);
   }
 
   private onMouseUp(ev: MouseEvent) {

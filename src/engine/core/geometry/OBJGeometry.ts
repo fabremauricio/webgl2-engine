@@ -8,8 +8,9 @@ export default class OBJGeometry extends VAOGeometry {
     const vertices: Array<[number, number, number]> = [];
     const normals: Array<[number, number, number]> = [];
     const textures: Array<[number, number]> = [];
-    const indices: Array<[number, number, number]> = [];
     const faces: Array<[string, string, string]> = [];
+
+    const _st = performance.now();
 
     source
       .split("\n")
@@ -21,7 +22,7 @@ export default class OBJGeometry extends VAOGeometry {
           const data = rest.map((e) => parseFloat(e));
           vertices.push(data as [number, number, number]);
         } else if (letter === "vt") {
-          const data = rest.map((e) => parseFloat(e));
+          const data = rest.map((e,i) => i==1? 1 - parseFloat(e) : parseFloat(e));
           textures.push(data as [number, number]);
         } else if (letter === "vn") {
           const data = rest.map((e) => parseFloat(e));
@@ -31,11 +32,14 @@ export default class OBJGeometry extends VAOGeometry {
         }
       });
 
-    const newNormals: Array<[number, number, number]> = vertices.map(() => [
-      0, 0, 0,
-    ]);
-    const newTextures: Array<[number, number]> = vertices.map(() => [0, 0]);
+    const newVertices: Array<[number,number,number]> = [];
+    const newNormals: Array<[number, number, number]> = [];
+    const newTextures: Array<[number, number]> = [];
 
+    const indices: Array<[number, number, number]> = [];
+    const hash: Map<string,number> = new Map<string,number>();
+    
+    let cnt = 0;
     faces.forEach((f) => {
       const index = [];
 
@@ -47,20 +51,28 @@ export default class OBJGeometry extends VAOGeometry {
               number,
               number
             ]);
+        
+        const key = `${vi}_${ti}_${ni}`;
 
-        if (ti !== -1) {
-          newTextures[vi - 1] = textures[ti - 1];
+        if(!hash.has(key)) {
+          hash.set(key, cnt);
+          newVertices.push(vertices[vi-1])
+          newNormals.push(normals[ni-1]|| [0,0,0]);
+          newTextures.push(textures[ti-1]||[0,0]);
+          index.push(cnt);
+          cnt++;
+        } else {
+          const existing = hash.get(key);
+          index.push(existing);
         }
-
-        if (ni !== -1) {
-          newNormals[vi - 1] = normals[ni - 1];
-        }
-
-        index.push(vi - 1);
       }
       indices.push(index as [number, number, number]);
     });
 
-    this.setup(vertices, newNormals, newTextures, indices);
+    this.setup(newVertices, newNormals, newTextures, indices);
+
+    const _et = performance.now();
+
+    console.info('Performance: ', _et-_st);
   }
 }
