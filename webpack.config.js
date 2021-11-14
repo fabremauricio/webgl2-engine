@@ -22,6 +22,11 @@ module.exports = {
         use: "raw-loader",
         include: [path.resolve(__dirname, "src")],
       },
+      {
+        test: /\.(jpg|jpeg|png)$/,
+        use: 'url-loader',
+        include: [path.resolve(__dirname, "src")],
+      }
     ],
   },
   resolve: {
