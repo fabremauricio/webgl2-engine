@@ -2,13 +2,14 @@ import PerspectiveCamera from "./core/camera/PerspectiveCamera";
 import OBJGeometry from "./core/geometry/OBJGeometry";
 import Scene from "./core/Scene";
 
-import suzanneSource from "../engine/models/cube.obj";
+import suzanneSource from "../engine/models/output.bin";
 import NormalsColorsProgram from "./shaders/normals-colors/NormalsColorsProgram";
 import OrbitControls from "./core/utils/OrbitControls";
 import TextureProgram from "./shaders/texture/TextureProgram";
 import ImageTexture from "./core/ImageTexture";
 
 import img from './assets/checker.png';
+import BinaryGeometry from "./core/geometry/BinaryGeometry";
 
 export default class SampleScene extends Scene {
   private shader: TextureProgram;
@@ -22,9 +23,7 @@ export default class SampleScene extends Scene {
     this.shader = new TextureProgram(this);
     this.camera = new PerspectiveCamera();
 
-    this.suzanne = new OBJGeometry(this, suzanneSource);
-
-    console.log(img);
+    this.suzanne = new BinaryGeometry(this, suzanneSource);
     this.texture = new ImageTexture(this, img);
 
     new OrbitControls(this, this.camera);

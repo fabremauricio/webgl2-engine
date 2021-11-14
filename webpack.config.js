@@ -23,10 +23,11 @@ module.exports = {
         include: [path.resolve(__dirname, "src")],
       },
       {
-        test: /\.(jpg|jpeg|png)$/,
+        test: /\.(jpg|jpeg|png|bin)$/,
         use: 'url-loader',
         include: [path.resolve(__dirname, "src")],
-      }
+      },
+
     ],
   },
   resolve: {
