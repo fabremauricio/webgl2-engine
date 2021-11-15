@@ -15,8 +15,19 @@ module.exports = {
       {
         test: /\.glsl$/,
         use: "raw-loader",
-        include: [path.resolve(__dirname, "src/shaders")],
+        include: [path.resolve(__dirname, "src")],
       },
+      {
+        test: /\.obj$/,
+        use: "raw-loader",
+        include: [path.resolve(__dirname, "src")],
+      },
+      {
+        test: /\.(jpg|jpeg|png|bin)$/,
+        use: 'url-loader',
+        include: [path.resolve(__dirname, "src")],
+      },
+
     ],
   },
   resolve: {
