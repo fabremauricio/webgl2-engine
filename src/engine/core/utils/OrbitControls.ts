@@ -4,15 +4,15 @@ import SceneNode from "../SceneNode";
 
 export default class OrbitControls extends SceneNode {
   private camera: PerspectiveCamera;
-  private radius = 4;
+  private radius = 5;
 
   private free = false;
 
   private downX = 0;
   private downY = 0;
 
-  private phi = 0;
-  private theta = 0;
+  private phi = Math.PI/4;
+  private theta = -Math.PI/4;
 
   private startPhi = 0;
   private startTheta = 0;

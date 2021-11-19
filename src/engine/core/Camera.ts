@@ -1,4 +1,4 @@
-import { mat4 } from "gl-matrix";
+import { mat3, mat4 } from "gl-matrix";
 
 export default abstract class Camera {
   protected width = 1;
@@ -16,7 +16,15 @@ export default abstract class Camera {
   modelViewMatrix(modelMatrix: Float32Array): Float32Array {
     /// FIXME
     const matrix = mat4.create();
-    mat4.multiply(matrix, this.viewMatrix(), modelMatrix);
+    mat4.multiply(matrix, this.viewMatrix(),modelMatrix);
+    return new Float32Array(matrix);
+  }
+
+  normalMatrix(modelMatrix: Float32Array): Float32Array {
+    const matrix = mat3.create();
+    mat3.fromMat4(matrix, modelMatrix);
+    mat3.invert(matrix, matrix);
+    mat3.transpose(matrix, matrix);
     return new Float32Array(matrix);
   }
 
