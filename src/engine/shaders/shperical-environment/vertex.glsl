@@ -15,5 +15,5 @@ void main() {
    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
 
    e = (modelViewMatrix * vec4(position, 1.0)).xyz;
-   n = normalize((normalMatrix * normal)*.5 + vec3(.5));
+   n = tangent *0.5 + vec3(0.5);
 }

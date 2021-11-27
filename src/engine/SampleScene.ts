@@ -2,7 +2,7 @@ import PerspectiveCamera from "./core/camera/PerspectiveCamera";
 import OBJGeometry from "./core/geometry/OBJGeometry";
 import Scene from "./core/Scene";
 
-import suzanneSource from "../engine/models/suzanne.bin";
+import suzanneSource from "../engine/models/output.bin";
 import NormalsColorsProgram from "./shaders/normals-colors/NormalsColorsProgram";
 import OrbitControls from "./core/utils/OrbitControls";
 import TextureProgram from "./shaders/texture/TextureProgram";
@@ -84,22 +84,22 @@ export default class SampleScene extends Scene {
       this.camera.normalMatrix(this.rb1.modelMatrix())
     );
 
-    // this.shader.run(
-    //   gl,
-    //   this.suzanne,
-    //   this.texture,
-    //   this.camera.modelViewMatrix(this.rb2.modelMatrix()),
-    //   this.camera.projectionMatrix(),
-    //   this.camera.normalMatrix(this.rb2.modelMatrix())
-    // );
-
-    this.textureShader.run(
+    this.shader.run(
       gl,
       this.suzanne,
       this.texture,
       this.camera.modelViewMatrix(this.rb2.modelMatrix()),
-      this.camera.projectionMatrix()
+      this.camera.projectionMatrix(),
+      this.camera.normalMatrix(this.rb2.modelMatrix())
     );
+
+    // this.textureShader.run(
+    //   gl,
+    //   this.suzanne,
+    //   this.texture,
+    //   this.camera.modelViewMatrix(this.rb2.modelMatrix()),
+    //   this.camera.projectionMatrix()
+    // );
 
     this.basicShader.run(
       gl,

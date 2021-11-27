@@ -16,5 +16,5 @@ void main() {
 
     color = vec4(normalize(r), 1.0);
     color = texture(uvSampler, uv);
-    color = vec4(n, 1.0);
+    color = vec4(normalize(n).xy, 1.0, 1.0);
 }

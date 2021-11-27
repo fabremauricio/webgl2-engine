@@ -4,7 +4,7 @@ import SceneNode from "../SceneNode";
 
 export default class OrbitControls extends SceneNode {
   private camera: PerspectiveCamera;
-  private radius = 5;
+  private radius = 3;
 
   private free = false;
 
