@@ -1,5 +1,6 @@
 import Scene from "./engine/core/Scene";
 import SampleScene from "./engine/SampleScene";
+import CoilScene from './engine/CoilScene';
 
 window.onload = main;
 
@@ -7,7 +8,7 @@ function main() {
     const gl = getContext("canvas");
 
     if(gl) {
-        const scene: Scene = new SampleScene();
+        const scene: Scene = new CoilScene();
 
         scene.init(gl);
         

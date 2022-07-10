@@ -16,10 +16,6 @@ export default class VAOGeometry extends Geometry {
 
   private indexCount: number = 0;
 
-  constructor(scene: Scene) {
-    super(scene);
-  }
-
   protected setup(
     vertices: Array<[number, number, number]>,
     normals: Array<[number, number, number]>,
